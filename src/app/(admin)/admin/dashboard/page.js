@@ -1,13 +1,4 @@
-// // page.js
 
-// export default function Dashboard() {
-//     return (
-//       <div className="min-h-screen p-20 bg-background text-primary">
-//           <h1 className="text-4xl font-bold text-center">Dashboard</h1>
-//       </div>
-//     );
-//   }
-  
 export default function Dashboard() {
   return (
     <div className="min-h-screen p-6 md:p-20 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white">
