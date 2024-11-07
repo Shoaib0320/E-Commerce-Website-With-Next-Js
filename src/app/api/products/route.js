@@ -1,22 +1,20 @@
-import connectToDatabase from '../../lib/connectDB';
+import dbConnect from '../../lib/connectDB';
 import Product from '../../Models/Products';
 
-export default async function handler(req, res) {
-  await connectToDatabase();
+// Connect to database and handle GET requests
+export async function GET(req) {
+  await dbConnect();
+  const products = await Product.find().populate('category');
+  return new Response(JSON.stringify(products), { status: 200 });
+}
 
-  switch (req.method) {
-    case 'GET':
-      const products = await Product.find().populate('category');
-      res.json(products);
-      break;
-    case 'POST':
-      const { title, description, category, price, image } = req.body;
-      const newProduct = new Product({ title, description, category, price, image });
-      await newProduct.save();
-      res.json({ message: 'Product added' });
-      break;
-    default:
-      res.setHeader('Allow', ['GET', 'POST']);
-      res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
+// Handle POST requests
+export async function POST(req) {
+  await dbConnect();
+  const { title, description, category, price, imageUrl } = await req.json();
+  
+  const product = new Product({ title, description, category, price, imageUrl });
+  await product.save();
+  
+  return new Response(JSON.stringify(product), { status: 201 });
 }
